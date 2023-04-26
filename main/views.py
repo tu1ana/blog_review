@@ -8,3 +8,9 @@ def index(request):
         message = request.POST.get('message')
         print(f'You have new message from {name}({email}): {message}')
     return render(request, 'main/index.html')
+
+
+def contact(request):
+    if request.method == 'POST':
+        print(**request.POST)
+    return render(request, 'main/contact.html')
