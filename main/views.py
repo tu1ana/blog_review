@@ -9,6 +9,9 @@ def index(request):
         email = request.POST.get('email')
         message = request.POST.get('message')
         print(f'You have new message from {name}({email}): {message}')
+    context = {
+        'object_list': Article.objects.all()[:3]
+    }
     return render(request, 'main/index.html')
 
 
