@@ -18,10 +18,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from main.views import index, contact
+from main.views import index, contact, blog
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('contact/', contact)
+    path('contact/', contact),
+    path('blog/', blog)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

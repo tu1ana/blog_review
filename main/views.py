@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from main.models import Article
+
 
 def index(request):
     if request.method == 'POST':
@@ -8,6 +10,13 @@ def index(request):
         message = request.POST.get('message')
         print(f'You have new message from {name}({email}): {message}')
     return render(request, 'main/index.html')
+
+
+def blog(request):
+    context = {
+        'object_list': Article.objects.all()
+    }
+    return render(request, 'main/blog.html', context)
 
 
 def contact(request):
