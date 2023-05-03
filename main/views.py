@@ -12,7 +12,7 @@ def index(request):
     context = {
         'object_list': Article.objects.all()[:3]
     }
-    return render(request, 'main/index.html')
+    return render(request, 'main/index.html', context)
 
 
 def blog(request):
@@ -20,6 +20,14 @@ def blog(request):
         'object_list': Article.objects.all()
     }
     return render(request, 'main/blog.html', context)
+
+
+def blog_item(request, pk):
+    context = {
+        'object': Article.objects.get(pk=pk)
+    }
+
+    return render(request, 'main/blog_item.html', context)
 
 
 def contact(request):
