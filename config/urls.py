@@ -25,5 +25,5 @@ urlpatterns = [
     path('', IndexView.as_view()),
     path('contact/', ContactView.as_view()),
     path('blog/', BlogListView.as_view()),
-    path('blog/<int:pk>/', BlogDetail)
+    path('blog/<int:pk>/', BlogDetail.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

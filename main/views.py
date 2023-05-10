@@ -39,9 +39,9 @@ class ContactView(TemplateView):
     }
 
     def get_context_data(self, **kwargs):
-        if request.method == 'POST':
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            message = request.POST.get('message')
+        if self.request.method == 'POST':
+            name = self.request.POST.get('name')
+            email = self.request.POST.get('email')
+            message = self.request.POST.get('message')
             print(f'You have new message from {name}({email}): {message}')
-        return self.get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
