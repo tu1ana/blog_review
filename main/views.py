@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 
 from main.models import Article
 
@@ -28,18 +28,20 @@ class BlogListView(ListView):
     }
 
 
-def blog_item(request, pk):
-    context = {
-        'object': Article.objects.get(pk=pk)
+class BlogDetail(DetailView):
+    model = Article
+
+
+class ContactView(TemplateView):
+    template_name = 'main/contact.html'
+    extra_context = {
+        'title': 'Контакты'
     }
 
-    return render(request, 'main/blog_item.html', context)
-
-
-def contact(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        print(f'You have new message from {name}({email}): {message}')
-    return render(request, 'main/contact.html')
+    def get_context_data(self, **kwargs):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            message = request.POST.get('message')
+            print(f'You have new message from {name}({email}): {message}')
+        return self.get_context_data(**kwargs)
