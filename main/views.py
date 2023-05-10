@@ -1,25 +1,31 @@
 from django.shortcuts import render
+from django.views.generic import ListView, TemplateView
 
 from main.models import Article
 
 
-def index(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        print(f'You have new message from {name}({email}): {message}')
-    context = {
-        'object_list': Article.objects.all()[:3]
+class IndexView(TemplateView):
+    template_name = 'main/index.html'
+    extra_context = {
+        'title': 'Главная страница'
     }
-    return render(request, 'main/index.html', context)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            name = self.request.POST.get('name')
+            email = self.request.POST.get('email')
+            message = self.request.POST.get('message')
+            print(f'You have new message from {name}({email}): {message}')
+        context_data['object_list'] = Article.objects.all()[:3]
+        return context_data
 
 
-def blog(request):
-    context = {
-        'object_list': Article.objects.all()
+class BlogListView(ListView):
+    model = Article
+    extra_context = {
+        'title': 'Главная страница'
     }
-    return render(request, 'main/blog.html', context)
 
 
 def blog_item(request, pk):
