@@ -16,14 +16,9 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-
-from main.views import BlogDetail, BlogListView, ContactView, IndexView
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', IndexView.as_view()),
-    path('contact/', ContactView.as_view()),
-    path('blog/', BlogListView.as_view()),
-    path('blog/<int:pk>/', BlogDetail.as_view())
+    path('', include('main.urls', namespace='main'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,9 +1,32 @@
 {% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="row">
         <div class="col-md-4">
             <h2>{{ object.title }}</h2>
             <p>{{ object.body }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <form method="post" action="{% url 'main:comment' object.pk %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-primary">Отправить</button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    {% for comment_item in article.comment_set.all %}
+                        <p>
+                            >>: {{ comment_item.comment }}
+                            <span class="text-muted float-right">{{ comment_item.created_at|date:"d.m.Y" }}</span>
+                        </p>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

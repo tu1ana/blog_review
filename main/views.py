@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView, DetailView
+from django.urls import reverse
+from django.views.generic import ListView, TemplateView, DetailView, CreateView
 
-from main.models import Article
+from main.forms import CommentForm
+from main.models import Article, Comment
 
 
 class IndexView(TemplateView):
@@ -31,6 +33,11 @@ class BlogListView(ListView):
 class BlogDetail(DetailView):
     model = Article
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['form'] = CommentForm()
+        return context_data
+
 
 class ContactView(TemplateView):
     template_name = 'main/contact.html'
@@ -45,3 +52,18 @@ class ContactView(TemplateView):
             message = self.request.POST.get('message')
             print(f'You have new message from {name}({email}): {message}')
         return super().get_context_data(**kwargs)
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('main:article', args=[self.kwargs.get('pk')])
+
+    def form_valid(self, form):
+        comment_item = form.save(commit=False)
+        comment_item.article_id = self.kwargs.get('pk')
+        comment_item.save()
+
+        return super().form_valid(form)
