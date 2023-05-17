@@ -35,7 +35,7 @@ class BlogDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['form'] = CommentForm()
+        context_data['form'] = CommentForm(initial={'article': self.kwargs.get('pk')})
         return context_data
 
 
@@ -60,10 +60,3 @@ class CommentCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('main:article', args=[self.kwargs.get('pk')])
-
-    def form_valid(self, form):
-        comment_item = form.save(commit=False)
-        comment_item.article_id = self.kwargs.get('pk')
-        comment_item.save()
-
-        return super().form_valid(form)
