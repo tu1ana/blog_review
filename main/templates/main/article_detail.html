@@ -10,7 +10,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <form method="post">
+                    <form method="post" action="{% url 'main:comment' object.pk %}">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <button class="btn btn-primary">Отправить</button>
