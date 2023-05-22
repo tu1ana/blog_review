@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from users.forms import RegisterForm
+
 
 class LoginView(BaseLoginView):
     template_name = 'users/login.html'
@@ -15,5 +17,6 @@ class LogoutView(BaseLogoutView):
 
 
 class RegisterView(CreateView):
-    form_class = UserCreationForm
-    template_name = 'users/login.html'
+    form_class = RegisterForm
+    template_name = 'users/register.html'
+    success_url = reverse_lazy('main:index')
