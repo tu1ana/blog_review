@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
 
     'main',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
