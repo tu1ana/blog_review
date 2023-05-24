@@ -10,11 +10,18 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
+                    {% if user.is_authenticated %}
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button class="btn btn-primary">Отправить</button>
+                        <button class="btn btn-primary">Send</button>
                     </form>
+                    {% else %}
+                        <span class="text-muted">
+                            Need to be logged in for posting comments
+                            <a href="{% url 'users:login' %}?next={{ request.path }}">sign in</a>
+                        </span>
+                    {% endif %}
                 </div>
                 <div class="card-body">
                     {% for comment_item in article.comment_set.all %}

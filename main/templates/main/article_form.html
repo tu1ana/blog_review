@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Create article
+                </div>
+                <div class="card-body">
+                    {% if user.is_staff %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class="btn btn-primary">Create</button>
+                        </form>
+                    {% else %}
+                        <span class="text-muted">
+                            Need to be staff user
+                            <a href="{% url 'users:login' %}?next={{ request.path }}">войти</a>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

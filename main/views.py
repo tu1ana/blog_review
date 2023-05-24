@@ -1,8 +1,11 @@
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, DetailView, CreateView
 
-from main.forms import CommentForm
+from main.forms import CommentForm, ArticleForm
 from main.models import Article, Comment
 
 
@@ -37,6 +40,14 @@ class BlogDetail(DetailView):
         context_data = super().get_context_data(**kwargs)
         context_data['form'] = CommentForm(initial={'article': self.kwargs.get('pk')})
         return context_data
+
+
+class BlogCreateView(UserPassesTestMixin, CreateView):
+    model = Article
+    form_class = ArticleForm
+
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 class ContactView(TemplateView):

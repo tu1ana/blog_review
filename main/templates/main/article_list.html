@@ -1,6 +1,11 @@
 {% extends 'main/base.html' %}
 {% block content %}
     <div class="row">
+        {% if user.is_staff %}
+            <div class="col-12">
+                <a href="{% url 'main:create' %}" class="btn btn-outline-primary">Create article</a>
+            </div>
+        {% endif %}
         {% for object in object_list %}
             <div class="col-md-4">
                 <h2>{{ object.title }}</h2>
