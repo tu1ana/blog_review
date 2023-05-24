@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView
 
@@ -45,9 +45,18 @@ class BlogDetail(DetailView):
 class BlogCreateView(UserPassesTestMixin, CreateView):
     model = Article
     form_class = ArticleForm
+    success_url = reverse_lazy('main:blog')
 
     def test_func(self):
         return self.request.user.is_staff
+
+    def form_valid(self, form):
+        if form.is_valid():
+            self.object = form.save()
+            self.object.author = self.request.user
+            self.object.save()
+
+        return super().form_valid(form)
 
 
 class BlogUpdateView(UserPassesTestMixin, UpdateView):
@@ -55,7 +64,7 @@ class BlogUpdateView(UserPassesTestMixin, UpdateView):
     form_class = ArticleForm
 
     def test_func(self):
-        return self.request.user.is_staff and self.object.author == self.request.user
+        return self.request.user.is_staff and self.get_object().author == self.request.user
 
 
 class ContactView(TemplateView):
