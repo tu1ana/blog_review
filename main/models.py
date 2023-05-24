@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -14,6 +15,7 @@ class Category(models.Model):
 
 class Article(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=250, verbose_name='Заголовок')
     body = models.TextField(verbose_name='Содержимое')
     preview = models.ImageField(upload_to='blog/', null=True, blank=True, verbose_name='Изображение')

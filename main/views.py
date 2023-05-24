@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView, DetailView, CreateView
+from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView
 
 from main.forms import CommentForm, ArticleForm
 from main.models import Article, Comment
@@ -48,6 +48,14 @@ class BlogCreateView(UserPassesTestMixin, CreateView):
 
     def test_func(self):
         return self.request.user.is_staff
+
+
+class BlogUpdateView(UserPassesTestMixin, UpdateView):
+    model = Article
+    form_class = ArticleForm
+
+    def test_func(self):
+        return self.request.user.is_staff and self.object.author == self.request.user
 
 
 class ContactView(TemplateView):
