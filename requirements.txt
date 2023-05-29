@@ -3,3 +3,5 @@ psycopg2-binary
 pillow
 django-crispy-forms
 crispy-bootstrap4
+redis
+python-dotenv
