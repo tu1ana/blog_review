@@ -1,12 +1,10 @@
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView
 
 from main.forms import CommentForm, ArticleForm
 from main.models import Article, Comment
+from main.services import get_cached_top_articles
 
 
 class IndexView(TemplateView):
@@ -22,7 +20,7 @@ class IndexView(TemplateView):
             email = self.request.POST.get('email')
             message = self.request.POST.get('message')
             print(f'You have new message from {name}({email}): {message}')
-        context_data['object_list'] = Article.objects.all()[:3]
+        context_data['object_list'] = get_cached_top_articles()
         return context_data
 
 
