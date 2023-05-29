@@ -13,3 +13,4 @@ def get_cached_top_articles():
             top_articles = queryset
             cache.set(key, top_articles)
         return top_articles
+    return queryset
